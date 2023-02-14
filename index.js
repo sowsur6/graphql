@@ -49,7 +49,7 @@ fetch("https://learn.01founders.co/api/graphql-engine/v1/graphql", queryObject)
     const xpByProject = document.querySelector("#projects-by-xp");
     console.log(userdata);
     profile.innerHTML = `<h2>Profile</h2><h3>Username: ${userdata[0].login}</h3>`;
-    profile.innerHTML += `<h3>Last project: ${progressByUser.at(-1).object.name}</h3><h3>Total XP: 564 kB</h3><img src="./01Founders.png">`;
+    profile.innerHTML += `<h3>Last project: ${progressByUser.at(-1).object.name}</h3><h3>Total XP: 664 kB</h3><img src="./01Founders.png">`;
     projects.innerHTML = `<h2>Projects Completed</h2>`;
     console.log(progressByUser);
     projects.innerHTML += generateProjects(progressByUser);
