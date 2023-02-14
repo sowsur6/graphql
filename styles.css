@@ -1,0 +1,90 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #8f7e9c;
+  display: flex;
+  /* justify-content: center; */
+  gap: 1rem;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  font-size: 2em;
+  line-height: 1.5;
+  display: flex;
+}
+
+h2 {
+  text-align: center;
+}
+
+text {
+  font-size: 0.45em;
+  color: #9d4edd;
+}
+
+rect:hover {
+  fill: #240042;
+}
+
+line {
+  stroke: #240042;
+  stroke-width: 2;
+}
+rect {
+  fill: #8c00ff;
+  stroke-width: 2;
+  stroke: #240042;
+}
+
+#profile,
+#completed-projects,
+#xp,
+#projects-by-xp {
+  margin-top: 7.5rem;
+  width: fit-content;
+  height: fit-content;
+  background: #438a84;
+}
+
+#profile {
+  height: 550px;
+}
+
+#completed-projects {
+  width: 400px !important;
+  height: 550px;
+  overflow: auto;
+}
+
+#profile-projects {
+  display: flex;
+  gap: 1rem;
+}
+
+#header {
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  height: 50px;
+  background: #9d4edd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 30px;
+}
