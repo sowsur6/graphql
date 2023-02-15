@@ -49,9 +49,9 @@ fetch("https://learn.01founders.co/api/graphql-engine/v1/graphql", queryObject)
     const xpByProject = document.querySelector("#projects-by-xp");
     console.log(userdata);
     profile.innerHTML = `<h2>Profile</h2><h3>Username: ${userdata[0].login}</h3>`;
-    profile.innerHTML += `<h3>Last project: ${progressByUser.at(-1).object.name}</h3><h3>Total XP: 664 kB</h3><img src="./01Founders.png">`;
+    profile.innerHTML += `<h3>Last project: ${progressByUser.at(-1).object.name}</h3><h3></h3><img src="./01Founders.png">`;
     projects.innerHTML = `<h2>Projects Completed</h2>`;
-    console.log(progressByUser);
+    console.log("prbuser",progressByUser);
     projects.innerHTML += generateProjects(progressByUser);
     xpOverTime.innerHTML = `<h2>Xp over time</h2>`;
     const top5 = projectTransaction.filter((project, i) => i < 5);
@@ -78,8 +78,16 @@ const generateBarChart = (data) => {
   // Extract the amount values and dates
   const amountValues = data.projectTransaction.map((item) => item.amount);
   const dates = data.projectTransaction.map((item) => item.createdAt);
-
-  // Create the SVG element
+  console.log(amountValues)
+  let sum=0
+  amountValues.forEach(element => {
+    sum += element
+  });
+  sum=(sum+30000)/1000
+  // console.log(sum/1000)
+  profile.innerHTML += `<h3>Total XP: ${sum} kB</h3>`;
+  // console.log("am",amountValues)
+  // // Create the SVG element
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("width", width);
   svg.setAttribute("height", height);
