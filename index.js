@@ -71,7 +71,7 @@ fetch("https://learn.01founders.co/api/graphql-engine/v1/graphql", queryObject)
           })
       })
     console.log(allProjects, "top 444444")
-    xpByProject.innerHTML = `<h2>Highest XP Projects</h2><h2 class="projectName"></h2><h2 class="projectXP"></h2>`;
+    xpByProject.innerHTML = `<h2> Projects XP</h2><h2 class="projectName"></h2><h2 class="projectXP"></h2>`;
     console.log(progressByUser, projectTransaction);
     generateBarChart(data);
     generatePieChart(allProjects);
@@ -101,7 +101,7 @@ const generateBarChart = (data) => {
   });
   sum=(sum)/1000
   // console.log(sum/1000)
-  profile.innerHTML += `<h3>Total XP: ${sum} kB</h3>`;
+  profile.innerHTML += `<h3>Projects XP: ${sum} kB</h3>`;
   // console.log("am",amountValues)
   // // Create the SVG element
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
