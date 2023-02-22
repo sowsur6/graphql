@@ -40,6 +40,8 @@ const queryObject = {
   }),
 };
 
+let allProjects;
+
 fetch("https://learn.01founders.co/api/graphql-engine/v1/graphql", queryObject)
   .then((response) => response.json())
   .then(({ data, data: { userdata, progressByUser, projectTransaction } }) => {
@@ -54,11 +56,25 @@ fetch("https://learn.01founders.co/api/graphql-engine/v1/graphql", queryObject)
     console.log("prbuser",progressByUser);
     projects.innerHTML += generateProjects(progressByUser);
     xpOverTime.innerHTML = `<h2>Xp over time</h2>`;
-    const top5 = projectTransaction.filter((project, i) => i < 5);
+    allProjects = projectTransaction.filter((value,index,self)=>{
+      return index === self.findIndex((t)=>{
+          let projectDone = false 
+          for(let i=0; i<progressByUser.length;i++){
+            if(progressByUser[i].object.name === t.object.name){
+              projectDone = true; 
+              break
+            }else{
+              projectDone = false;
+            }
+          }  
+          return t.object.name === value.object.name && projectDone
+          })
+      })
+    console.log(allProjects, "top 444444")
     xpByProject.innerHTML = `<h2>Highest XP Projects</h2><h2 class="projectName"></h2><h2 class="projectXP"></h2>`;
     console.log(progressByUser, projectTransaction);
     generateBarChart(data);
-    generatePieChart(top5);
+    generatePieChart(allProjects);
   });
 const generateProjects = (progressByUser) => {
   return progressByUser.reduce((acc, curr, i) => {
@@ -76,14 +92,14 @@ const generateBarChart = (data) => {
   const maxValue = 2.5;
 
   // Extract the amount values and dates
-  const amountValues = data.projectTransaction.map((item) => item.amount);
+  const amountValues = allProjects
   const dates = data.projectTransaction.map((item) => item.createdAt);
   console.log(amountValues)
   let sum=0
   amountValues.forEach(element => {
-    sum += element
+    sum += element.amount
   });
-  sum=(sum+30000)/1000
+  sum=(sum)/1000
   // console.log(sum/1000)
   profile.innerHTML += `<h3>Total XP: ${sum} kB</h3>`;
   // console.log("am",amountValues)
@@ -118,13 +134,13 @@ const generateBarChart = (data) => {
   const accumulatedValues = Array(numOfColumns).fill(0);
   const accumulatedDates = Array(numOfColumns).fill("");
 
-  for (let i = 0; i < data.projectTransaction.length; i++) {
+  for (let i = 0; i < allProjects.length; i++) {
     const date = new Date(data.projectTransaction[i].createdAt);
 
     // Check which column the date belongs to
     for (let j = 0; j < numOfColumns; j++) {
       if (date >= dateRanges[j].start && date <= dateRanges[j].end) {
-        accumulatedValues[j] += data.projectTransaction[i].amount;
+        accumulatedValues[j] += allProjects[i].amount;
         accumulatedDates[j] = date;
         break;
       }
@@ -167,19 +183,26 @@ const generateBarChart = (data) => {
   xpOverTime.appendChild(svg);
 };
 
-const generatePieChart = (top5) => {
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+const generatePieChart = (allProjects) => {
   const radius = 150;
-  const total = top5.reduce((acc, val) => acc + val.amount, 0);
-  const colors = ["#0050BF", "#00FF7B", "#FF003C","#FFFF3C","#FFA600"];
+  const total = allProjects.reduce((acc, val) => acc + val.amount, 0);
   let currentAngle = 0;
 
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("width", "500");
   svg.setAttribute("height", "500");
-  console.log("h", top5);
+  console.log("h", allProjects);
   const project = document.createElement("h3");
-  for (let i = 0; i < top5.length; i++) {
-    const transaction = top5[i];
+  for (let i = 0; i < allProjects.length; i++) {
+    const transaction = allProjects[i];
     const angle = (transaction.amount / total) * 360;
     const startX = 250;
     const startY = 250;
@@ -194,7 +217,7 @@ const generatePieChart = (top5) => {
       } A ${radius} ${radius} 0 ${largeArcFlag} 1 ${endX} ${endY} Z`
     );
 
-    path.setAttribute("fill", colors[i]);
+    path.setAttribute("fill", getRandomColor());
     path.setAttribute("class", `${transaction.object.name}`);
     svg.appendChild(path);
     path.addEventListener("mouseover", () => {
